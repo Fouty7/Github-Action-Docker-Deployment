@@ -4,6 +4,7 @@ services:
     nodejs-app:
         build:
           context: ./node-app
+        image: aminfourty7/nodejs-kubernetes:latest  
         container_name: nodejs-app
         hostname: nodejs-app
         ports:
@@ -11,6 +12,7 @@ services:
     nginx:
         build:
           context: ./nginx
+        image: aminfourty7/nginx-kubernetes:latest  
         container_name: nginx
         hostname: nginx
         ports:

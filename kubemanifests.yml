@@ -64,7 +64,7 @@ items:
             io.kompose.service: nginx
         spec:
           containers:
-            - image: nginx
+            - image: aminfourty7/nginx-kubernetes:latest
               name: nginx
               ports:
                 - containerPort: 80
@@ -98,7 +98,7 @@ items:
             io.kompose.service: nodejs-app
         spec:
           containers:
-            - image: nodejs-app
+            - image: aminfourty7/nodejs-kubernetes:latest
               name: nodejs-app
               ports:
                 - containerPort: 3000
