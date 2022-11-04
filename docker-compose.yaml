@@ -1,15 +1,13 @@
-version: '3'
+version: '3.5'
 
 services:
     nodejs-app:
         build:
-          context: ./nodedocker_app
-        container_name: nodejsserver
-        hostname: nodejsserver
+          context: ./node-app
+        container_name: nodejs-app
+        hostname: nodejs-app
         ports:
-            - "8888:8888" 
-        networks:
-            - example-net  
+            - "3000:3000"  
     nginx:
         build:
           context: ./nginx
