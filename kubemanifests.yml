@@ -11,14 +11,14 @@ items:
         io.kompose.service: nginx
       name: nginx
     spec:
+      type: NodePort
       ports:
         - name: "80"
           port: 80
           targetPort: 80
       selector:
         io.kompose.service: nginx
-    status:
-      loadBalancer: {}
+    status: {}
   - apiVersion: v1
     kind: Service
     metadata:
@@ -36,8 +36,7 @@ items:
           targetPort: 3000
       selector:
         io.kompose.service: nodejs-app
-    status:
-      loadBalancer: {}
+    status: {}
   - apiVersion: apps/v1
     kind: Deployment
     metadata:
