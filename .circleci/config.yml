@@ -13,7 +13,7 @@ jobs:
           command: |
             cd node-app
             npm install
-            npm install --save-dev webpack-cli
+            npm install webpack webpack-dev-server webpack-cli --save-dev
             npm run build 
       - save_cache:
           paths: [node-app/node_modules]
