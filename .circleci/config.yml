@@ -43,7 +43,7 @@ jobs:
             cd node-app
             npm install
             npm audit fix --audit-level=critical         
-wo#kflows:
+workflows:
   blue-green-deployment:
     jobs:
       - build-nodejsapp
