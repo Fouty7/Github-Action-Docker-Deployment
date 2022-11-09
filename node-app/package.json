@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --mode development --progress --colors",
+    "build": "webpack --mode development --progress --color",
     "start": "node index.js"
   },
   "keywords": [],
