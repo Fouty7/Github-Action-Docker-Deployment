@@ -38,11 +38,11 @@ jobs:
       - restore_cache:
           keys: [nodejs-build]
       - run:
-  #        name: Audit & Analyze Nodeapp
-  #        command: |
-  #          cd node-app
-  #          npm install
-  #          npm audit fix --audit-level=critical
+          name: Audit & Analyze Nodeapp
+          command: |
+            cd node-app
+            npm install
+            npm audit fix --audit-level=critical
   #deploy-infrastructure:
   #  docker:
   #    - image: amazon/aws-cli
