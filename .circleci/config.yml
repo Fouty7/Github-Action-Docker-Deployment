@@ -64,7 +64,7 @@ jobs:
     docker:
       - image: cimg/base:2022.06
         auth:
-          username: $DOCKERHUB_USER
+          username: Aminfourty7
           password: $DOCKERHUB_PASSWORD
     steps:
       - setup_remote_docker:
