@@ -62,10 +62,10 @@ jobs:
             - project/.circleci/ansible/inventory
   build-dockerimages:
     docker:
-      - image: cimg/base:2022.06
-        auth:
-          username: Aminfourty7
-          password: $DOCKERHUB_PASSWORD
+      - image: cimg/go:1.13
+        #auth:
+        #  username: Aminfourty7
+        #  password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
       - setup_remote_docker:
