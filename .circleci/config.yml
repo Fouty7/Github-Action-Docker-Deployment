@@ -65,7 +65,7 @@ jobs:
       - image: cimg/base:2022.06
         auth:
           username: Aminfourty7
-          password: $DOCKERHUB_PASSWORD
+          password: ANdakun.1010
     steps:
       - checkout
       - setup_remote_docker:
