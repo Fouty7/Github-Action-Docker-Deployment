@@ -42,24 +42,6 @@ jobs:
             cd node-app
             npm install
             npm audit fix --audit-level=critical  
-  get-instance-ip:
-    docker:
-      - image: amazon/aws-cli
-    steps:
-      - checkout
-      - run: yum install -y tar gzip
-      - run:
-          name: Add instance-end ip to ansible inventory
-          command: |
-            aws ec2 describe-instances \
-            --query 'Reservations[*].Instances[*].PublicIpAddress' \
-            --filters "Name=tag:project,Values=docker-server" \
-            --output text >> ~/project/.circleci/ansible/inventory
-            cat ~/project/.circleci/ansible/inventory
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - project/.circleci/ansible/inventory
   build-nodeapp-dockerimages:
     docker:
       - image: cimg/go:1.13
@@ -93,7 +75,50 @@ jobs:
             cd nginx
             docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWORD
             docker build -t aminfourty7/nginx-kubernetes:latest .
-            docker push aminfourty7/nginx-kubernetes:latest          
+            docker push aminfourty7/nginx-kubernetes:latest
+  get-instance-ip:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run: yum install -y tar gzip
+      - run:
+          name: Add instance-end ip to ansible inventory
+          command: |
+            aws ec2 describe-instances \
+            --query 'Reservations[*].Instances[*].PublicIpAddress' \
+            --filters "Name=tag:project,Values=docker-server" \
+            --output text >> ~/project/.circleci/ansible/inventory
+            cat ~/project/.circleci/ansible/inventory
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/.circleci/ansible/inventory
+  configure-infrastructure:
+    docker:
+      - image: python:3.10-alpine3.16
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints: ["9f:7e:0b:c8:94:45:60:f3:7a:95:ef:73:ca:42:dd:62"]
+      - run:
+          name: run nginx container
+          command: |
+            yum install -y ansible tar gzip aws-cli
+      - attach_workspace:
+          at: ~/    
+      - run:
+          name: Configure server
+          command: |
+            cd .circleci/ansible
+            ansible-playbook -i inventory.txt run-docker-app.yaml
+      - run:
+          name: run nodeapp container
+          command: |
+            cd .circleci/ansible
+            ansible-playbook -i inventory.txt run-docker-app.yaml      
+      - destroy-environment:
+          WorkflowID: ${CIRCLE_WORKFLOW_ID:0:7}                             
 workflows:
   docker-deployment:
     jobs:
