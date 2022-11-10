@@ -47,7 +47,7 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
-      - run: apt-get install -y tar gzip
+      - run: yum install -y tar gzip
       - run:
           name: Add instance-end ip to ansible inventory
           command: |
