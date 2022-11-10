@@ -59,7 +59,14 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - project/.circleci/ansible/inventory       
+            - project/.circleci/ansible/inventory
+  build-dockerimages:
+    docker:
+      - image: ubuntu-2204:2022.04.2
+    steps:
+      - checkout
+      - run: |
+          echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password $DOCKER_PASSWORD           
 workflows:
   docker-deployment:
     jobs:
@@ -68,6 +75,7 @@ workflows:
           requires: [build-nodejsapp]
       - scan-nodejsapp:
           requires: [build-nodejsapp]
+      - build-dockerimages    
       - get-instance-ip:
           requires: [test-nodejsapp, scan-nodejsapp]    
       #- configure-infrastructure:
