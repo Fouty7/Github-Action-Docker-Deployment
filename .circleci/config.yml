@@ -77,7 +77,7 @@ jobs:
           name: Build nodeapp image
           command: |
             cd node-app
-            docker build -t aminfourty7/nodejs-kubernetes:latest
+            docker build -t aminfourty7/nodejs-kubernetes:latest .
             docker push aminfourty7/nodejs-kubernetes:latest
 workflows:
   docker-deployment:
