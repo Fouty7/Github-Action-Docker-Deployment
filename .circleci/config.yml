@@ -89,7 +89,7 @@ workflows:
       - scan-nodejsapp:
           requires: [build-nodejsapp]
       - build-dockerimages:
-          requires:[scan-nodejsapp]
+          requires: [scan-nodejsapp]
       - get-instance-ip:
           requires: [test-nodejsapp, scan-nodejsapp]    
       #- configure-infrastructure:
