@@ -55,7 +55,7 @@ jobs:
             --query 'Reservations[*].Instances[*].PublicIpAddress' \
             --filters "Name=tag:project,Values=docker-server" \
             --output text >> ~/project/.circleci/ansible/inventory
-            cat inventory
+            cat ~/project/.circleci/ansible/inventory
       - persist_to_workspace:
           root: ~/
           paths:
