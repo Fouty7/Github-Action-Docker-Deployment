@@ -54,11 +54,12 @@ jobs:
             aws ec2 describe-instances \
             --query 'Reservations[*].Instances[*].PublicIpAddress' \
             --filters "Name=tag:project,Values=docker-server" \
-            --output text >> ~/project/.circleci/ansible/inventory.txt
+            --output text >> ~/project/.circleci/ansible/inventory
+            cat inventory
       - persist_to_workspace:
           root: ~/
           paths:
-            - project/.circleci/ansible/inventory.txt              
+            - project/.circleci/ansible/inventory       
 workflows:
   docker-deployment:
     jobs:
