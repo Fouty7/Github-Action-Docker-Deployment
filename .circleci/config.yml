@@ -127,7 +127,7 @@ workflows:
       #- get-instance-ip:
       #    requires: [test-nodejsapp, scan-nodejsapp]
       - run-containers:
-          requires: [build-nodeapp-dockerimages, build-nginx-dockerimage]     
+          requires: [build-nodeapp-dockerimage, build-nginx-dockerimage]     
       #- configure-infrastructure:
       #    requires: [deploy-infrastructure]
       #- run-migrations:
