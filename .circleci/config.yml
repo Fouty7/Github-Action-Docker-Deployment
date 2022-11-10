@@ -66,17 +66,19 @@ jobs:
         environment:
           DOCKERHUB_PASSWORD: Aminfourty7
           DOCKERHUB_USER: ANdakun.1010
-        auth:
-          username: $DOCKERHUB_USER
-          password: $DOCKERHUB_PASSWORD
+        #auth:
+        #  username: $DOCKERHUB_USER
+        #  password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
       - setup_remote_docker:
           version: 20.10.14
-      - run: |
-          TAG=0.1.$CIRCLE_BUILD_NUM
-          docker compose up
-          echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin   
+      - run:
+          name: Build nodeapp image
+          command: |
+            cd node-app
+            docker build -t aminfourty7/nodejs-kubernetes:latest
+            docker push aminfourty7/nodejs-kubernetes:latest
 workflows:
   docker-deployment:
     jobs:
