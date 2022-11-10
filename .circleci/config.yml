@@ -42,7 +42,7 @@ jobs:
             cd node-app
             npm install
             npm audit fix --audit-level=critical  
-  build-nodeapp-dockerimages:
+  build-nodeapp-dockerimage:
     docker:
       - image: cimg/go:1.13
         auth:
@@ -59,7 +59,7 @@ jobs:
             docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWORD
             docker build -t aminfourty7/nodejs-kubernetes:latest .
             docker push aminfourty7/nodejs-kubernetes:latest
-  build-nginx-dockerimages:
+  build-nginx-dockerimage:
     docker:
       - image: cimg/go:1.13
         auth:
@@ -111,7 +111,7 @@ jobs:
           name: run containers
           command: |
             cd .circleci/ansible
-            ansible-playbook -i inventory.txt run-docker-app.yaml                            
+            ansible-playbook -i inventory run-docker-app.yaml                            
 workflows:
   docker-deployment:
     jobs:
@@ -120,14 +120,14 @@ workflows:
           requires: [build-nodejsapp]
       - scan-nodejsapp:
           requires: [build-nodejsapp]
-      - build-nodeapp-dockerimages:
+      - build-nodeapp-dockerimage:
           requires: [scan-nodejsapp]
-      - build-nginx-dockerimages:
+      - build-nginx-dockerimage:
           requires: [scan-nodejsapp]    
       #- get-instance-ip:
       #    requires: [test-nodejsapp, scan-nodejsapp]
       - run-containers:
-          requires: [test-nodejsapp, scan-nodejsapp]     
+          requires: [build-nodeapp-dockerimages, build-nginx-dockerimage]     
       #- configure-infrastructure:
       #    requires: [deploy-infrastructure]
       #- run-migrations:
