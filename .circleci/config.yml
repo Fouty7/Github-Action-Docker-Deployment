@@ -41,17 +41,34 @@ jobs:
           command: |
             cd node-app
             npm install
-            npm audit fix --audit-level=critical         
+            npm audit fix --audit-level=critical  
+  get-instance-ip:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run: apt-get install -y tar gzip
+      - run:
+          name: Add instance-end ip to ansible inventory
+          command: |
+            aws ec2 describe-instances \
+            --query 'Reservations[*].Instances[*].PublicIpAddress' \
+            --filters "Name=tag:project,Values=docker-server" \
+            --output text >> ~/project/.circleci/ansible/inventory.txt
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/.circleci/ansible/inventory.txt              
 workflows:
-  blue-green-deployment:
+  docker-deployment:
     jobs:
       - build-nodejsapp
       - test-nodejsapp:
           requires: [build-nodejsapp]
       - scan-nodejsapp:
           requires: [build-nodejsapp]
-      #- deploy-infrastructure:
-      #    requires: [test-frontend, test-backend, scan-frontend, scan-backend]    
+      - get-instance-ip:
+          requires: [test-nodejsapp, scan-nodejsapp]    
       #- configure-infrastructure:
       #    requires: [deploy-infrastructure]
       #- run-migrations:
