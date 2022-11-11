@@ -18,4 +18,3 @@
       docker image ls
       docker compose up -d --build
       docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
-      docker images -a | grep none | awk '{ print $3; }' | xargs docker rmi --force
