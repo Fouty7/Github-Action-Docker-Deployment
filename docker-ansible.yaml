@@ -1,0 +1,18 @@
+---
+- name: "configuration play." 
+  hosts: web
+  user: ubuntu
+  become: true
+  become_method: sudo
+  become_user: root  
+  gather_facts: false
+
+  - name: copy files
+    copy:
+      src: .
+      dest: tmp/
+  - name: docker-compose
+    become: yes
+    docker_compose:
+      project_src: tmp/
+      state: present
