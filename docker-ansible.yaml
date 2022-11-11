@@ -1,10 +1,9 @@
 ---
-- name: "configuration play." 
+- name: configuration play 
   hosts: web
   user: ubuntu
   become: true
   become_method: sudo
-  become_user: root  
   gather_facts: false
   tasks:
 
@@ -13,8 +12,7 @@
       src: ./
       dest: tmp/
   - name: start nginx container
-  become: yes
-  shell: |
-    cd tmp
-    docker image ls
-    docker compose up
+    shell: |
+      cd tmp
+      docker image ls
+      docker compose up
