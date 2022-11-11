@@ -18,6 +18,5 @@
       docker image ls
       docker compose up --build
       docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
-
-  - name: Ending the 1st play now
-    meta: end_play    
+      docker images -a | grep none | awk '{ print $3; }' | xargs docker rmi --force
+    meta: end_play      
