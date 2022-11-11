@@ -16,19 +16,6 @@ jobs:
       - save_cache:
           paths: [node-app/node_modules]
           key: nodejs-build
-  #test-nodejsapp:
-  #  docker:
-  #    - image: circleci/node:16
-  #  steps:
-  #    - checkout
-  #    - restore_cache:
-  #        keys: [nodejs-build]
-  #    - run:
-  #        name: Run nodeapp tests
-  #        command: |
-  #          cd node-app
-  #          npm install
-  #          npm run test
   scan-nodejsapp:
     docker:
       - image: circleci/node:16
@@ -76,24 +63,24 @@ jobs:
             docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWORD
             docker build -t aminfourty7/test-nginx:latest .
             docker push aminfourty7/test-nginx:latest
-  #get-instance-ip:
-  #  docker:
-  #    - image: amazon/aws-cli
-  #  steps:
-  #    - checkout
-  #    - run: yum install -y tar gzip
-  #    - run:
-  #        name: Add instance-end ip to ansible inventory
-  #        command: |
-  #          aws ec2 describe-instances \
-  #          --query 'Reservations[*].Instances[*].PublicIpAddress' \
-  #          --filters "Name=tag:project,Values=docker-server" \
-  #          --output text >> ~/project/.circleci/ansible/inventory
-  #          cat ~/project/.circleci/ansible/inventory
-  #    - persist_to_workspace:
-  #        root: ~/
-  #        paths:
-  #          - project/.circleci/ansible/inventory
+  get-instance-ip:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run: yum install -y tar gzip
+      - run:
+          name: Add instance-end ip to ansible inventory
+          command: |
+            aws ec2 describe-instances \
+            --query 'Reservations[*].Instances[*].PublicIpAddress' \
+            --filters "Name=tag:project,Values=docker-server" \
+            --output text >> ~/project/inventory
+            cat ~/project/inventory
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/inventory
   run-containers:
     docker:
       - image: python:3.10-alpine3.16
@@ -115,29 +102,14 @@ workflows:
   docker-deployment:
     jobs:
       - build-nodejsapp
-      #- test-nodejsapp:
-      #    requires: [build-nodejsapp]
       - scan-nodejsapp:
           requires: [build-nodejsapp]
       - build-nodeapp-dockerimage:
           requires: [scan-nodejsapp]
       - build-nginx-dockerimage:
-          requires: [scan-nodejsapp]    
-      #- get-instance-ip:
-      #    requires: [test-nodejsapp, scan-nodejsapp]
+          requires: [scan-nodejsapp]
+          filters:
+            branches:
+              only: [main]    
       - run-containers:
-          requires: [build-nodeapp-dockerimage, build-nginx-dockerimage]     
-      #- configure-infrastructure:
-      #    requires: [deploy-infrastructure]
-      #- run-migrations:
-      #    requires: [configure-infrastructure]
-      #- deploy-frontend:
-      #    requires: [run-migrations]
-      #- deploy-backend:
-      #    requires: [run-migrations]
-      #- smoke-test:
-      #    requires: [deploy-backend, deploy-frontend]
-      #- cloudfront-update:
-      #    requires: [smoke-test]
-      #- cleanup:
-      #    requires: [cloudfront-update]    
+          requires: [build-nodeapp-dockerimage, build-nginx-dockerimage]
