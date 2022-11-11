@@ -110,6 +110,8 @@ workflows:
           requires: [scan-nodejsapp]
           filters:
             branches:
-              only: [main]    
+              only: [main]
+      - get-instance-ip:
+          requires: [build-nginx-dockerimage, build-nodeapp-dockerimage]        
       - run-containers:
-          requires: [build-nodeapp-dockerimage, build-nginx-dockerimage]
+          requires: [get-instance-ip]
