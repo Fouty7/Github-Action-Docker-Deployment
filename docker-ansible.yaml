@@ -11,9 +11,13 @@
     copy:
       src: ./
       dest: tmp/
+      
   - name: start nginx container
     shell: |
       cd tmp
       docker image ls
-      docker compose up
+      docker compose up --build
       docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
+
+  - name: Ending the 1st play now
+      meta: end_play    
