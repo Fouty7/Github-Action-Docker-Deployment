@@ -10,10 +10,11 @@
 
   - name: copy files
     copy:
-      src: .
+      src: ./
       dest: tmp/
-  - name: docker-compose
-    become: yes
-    docker_compose:
-      project_src: tmp/
-      state: present
+  - name: start nginx container
+  become: yes
+  shell: |
+    cd tmp
+    docker image ls
+    docker compose up
