@@ -20,7 +20,7 @@ jobs:
           docker build -t aminfourty7/githubaction-nginx:latest .
           docker push aminfourty7/test-laravel:latest    
 
-  get-ec2-ip-addr:
+  run-ansible:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -39,16 +39,7 @@ jobs:
           --filters "Name=tag:project,Values=docker-server" \
           --output text >> ~/inventory
           cat ~/inventory
-      - name: persist to workspace
-        uses: actions/upload-artifact@v3
-        with:
-          name: inventory
-          path: ~/inventory
-  run-containers:
-    runs-on: ubuntu-latest
-    needs: [get-ec2-ip-addr]
-    steps:
-      - uses: actions/checkout@v2
+ 
       - name: get ssh key
         uses: webfactory/ssh-agent@v0.6.0
         with:
