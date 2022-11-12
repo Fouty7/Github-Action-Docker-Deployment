@@ -10,11 +10,11 @@
   - name: copy files
     copy:
       src: ./
-      dest: tmp/
+      dest: github/
 
   - name: start nginx container
     shell: |
-      cd tmp
+      cd github
       docker image ls
       docker compose up -d --build
       docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
