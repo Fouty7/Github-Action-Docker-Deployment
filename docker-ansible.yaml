@@ -12,7 +12,7 @@
       src: ./
       dest: github/
 
-  - name: start nginx container
+  - name: start docker compose
     become: yes
     shell: |
       cd github
