@@ -13,6 +13,7 @@
       dest: github/
 
   - name: start nginx container
+    become: yes
     shell: |
       cd github
       docker image ls
