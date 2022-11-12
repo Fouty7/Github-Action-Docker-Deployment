@@ -44,10 +44,7 @@ jobs:
         uses: webfactory/ssh-agent@v0.6.0
         with:
             ssh-private-key: ${{ secrets.AWS_PRIVATE_KEY }}
-      - name: attach workspace
-        uses: actions/download-artifact@v3
-        with:
-          name: inventory
+      
       - name: Install dependencies
         run: sudo apt-get install ansible tar gzip
       - name: run containers
