@@ -4,18 +4,18 @@ services:
     nodejs-app:
         build:
           context: ./node-app
-        image: aminfourty7/test-nodejs:latest  
-        container_name: nodejs-app
+        image: aminfourty7/githubaction-nodejs:latest  
+        container_name: githubaction-nodejs-app
         hostname: nodejs-app
         ports:
             - "3000:3000"  
     nginx:
         build:
           context: ./nginx
-        image: aminfourty7/test-nginx:latest  
-        container_name: nginx
+        image: aminfourty7/githubaction-nginx:latest  
+        container_name: githubaction-nginx
         hostname: nginx
         ports:
-            - "80:80" 
+            - "8080:8080" 
         depends_on:
             - nodejs-app
