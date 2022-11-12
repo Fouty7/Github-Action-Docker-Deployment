@@ -18,4 +18,4 @@
       cd github
       docker image ls
       docker compose up -d --build
-      docker image prune
+      docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
