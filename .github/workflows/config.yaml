@@ -1,4 +1,4 @@
-name: CI/CD laravel-app
+name: workflow nodejs-app
 
 on:
   push:
