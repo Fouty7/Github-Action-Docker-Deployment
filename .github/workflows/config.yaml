@@ -21,15 +21,25 @@ jobs:
           docker login -u ${{ secrets.DOCKERHUB_USER }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
           docker build -t aminfourty7/githubaction-nginx:latest .
           docker push aminfourty7/githubaction-nginx:latest
-      - name: Report Fail
-        if: failure()
-        uses: rtCamp/action-slack-notify@v2
+      - uses: ravsamhq/notify-slack-action@v2
+        if: always()
         with:
           status: ${{ job.status }}
-          notification_title: '{workflow} has {status_message}'
+          notification_title: "{workflow} has {status_message}"
+          message_format: "{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}>"
+          footer: "Linked Repo <{repo_url}|{repo}>"
+          notify_when: "failure"
         env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_COLOR: ${{ job.status }}     
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}    
+      #- name: Report Fail
+      #  if: failure()
+      #  uses: rtCamp/action-slack-notify@v2
+      #  with:
+      #    status: ${{ job.status }}
+      #  env:
+      #    SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+      #    SLACK_COLOR: ${{ job.status }}
+
 
   get-ec2-ip:
     runs-on: ubuntu-latest
