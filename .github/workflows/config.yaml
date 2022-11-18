@@ -27,7 +27,8 @@ jobs:
         with:
           status: ${{ job.status }}
         env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}     
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_COLOR: ${{ job.status }}     
 
   get-ec2-ip:
     runs-on: ubuntu-latest
@@ -60,6 +61,7 @@ jobs:
           status: ${{ job.status }}
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_COLOR: ${{ job.status }}
 
   run-ansible:
     runs-on: ubuntu-latest
@@ -96,3 +98,4 @@ jobs:
           status: ${{ job.status }}
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_COLOR: ${{ job.status }}
