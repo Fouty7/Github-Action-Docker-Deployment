@@ -19,6 +19,6 @@
       docker image ls
       docker compose up -d --build
 
-  - name: cleanup old images
-    become: yes
-    shell: docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
+  #- name: cleanup old images
+  #  become: yes
+  #  shell: docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
