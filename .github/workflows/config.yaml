@@ -64,7 +64,7 @@ jobs:
       - name: Attach workspace
         uses: actions/download-artifact@v3
         with:
-          name: inventory
+          name: inventory1
 
       - name: run containers
         run: ansible-playbook -i inventory docker-ansible.yaml
