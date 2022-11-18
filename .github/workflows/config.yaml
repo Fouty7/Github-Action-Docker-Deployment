@@ -17,7 +17,7 @@ jobs:
           docker push aminfourty7/githubaction-nodejs:latest
       - name: build-nginx-image
         run: |
-          cd nginx
+          
           docker login -u ${{ secrets.DOCKERHUB_USER }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
           docker build -t aminfourty7/githubaction-nginx:latest .
           docker push aminfourty7/githubaction-nginx:latest
@@ -28,6 +28,7 @@ jobs:
           status: ${{ job.status }}
           notification_title: "{workflow} has {status_message}"
           message_format: "{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}>"
+          Job ID: "{run_id}"
           footer: "Linked Repo <{repo_url}|{repo}>"
           notify_when: "failure"
         env:
