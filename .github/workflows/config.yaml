@@ -73,14 +73,13 @@ jobs:
         uses: rtCamp/action-slack-notify@v2
         with:
           status: ${{ job.status }}
-          notify_when: 'failure'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
-      - name: Report Status
-        if: always()
-        uses: rtCamp/action-slack-notify@v2
-        with:
-          status: ${{ job.status }}
-          notify_when: 'success'
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}    
+      #- name: Report Status
+      #  if: always()
+      #  uses: rtCamp/action-slack-notify@v2
+      #  with:
+      #    status: ${{ job.status }}
+      #    notify_when: 'success'
+      #  env:
+      #    SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}    
