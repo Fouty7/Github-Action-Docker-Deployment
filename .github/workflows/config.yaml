@@ -20,7 +20,15 @@ jobs:
           cd nginx
           docker login -u ${{ secrets.DOCKERHUB_USER }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
           docker build -t aminfourty7/githubaction-nginx:latest .
-          docker push aminfourty7/githubaction-nginx:latest    
+          docker push aminfourty7/githubaction-nginx:latest
+      - name: Report Status
+        if: always()
+        uses: ravsamhq/notify-slack-action@v1
+        with:
+          status: ${{ job.status }}
+          notify_when: 'failure'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}       
 
   get-ec2-ip:
     runs-on: ubuntu-latest
@@ -46,6 +54,14 @@ jobs:
         with:
           name: inventory
           path: inventory
+      - name: Report Status
+        if: always()
+        uses: ravsamhq/notify-slack-action@v1
+        with:
+          status: ${{ job.status }}
+          notify_when: 'failure'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}    
 
   run-ansible:
     runs-on: ubuntu-latest
@@ -64,22 +80,23 @@ jobs:
       - name: Attach workspace
         uses: actions/download-artifact@v3
         with:
-          name: inventory1
+          name: inventory
 
       - name: run containers
         run: ansible-playbook -i inventory docker-ansible.yaml
       - name: Report Status
         if: always()
-        uses: rtCamp/action-slack-notify@v2
+        uses: ravsamhq/notify-slack-action@v1
         with:
           status: ${{ job.status }}
+          notify_when: 'failure'
         env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-      #- name: Report Status
-      #  if: always()
-      #  uses: rtCamp/action-slack-notify@v2
-      #  with:
-      #    status: ${{ job.status }}
-      #    notify_when: 'success'
-      #  env:
-      #    SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}    
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+      - name: Report Status
+        if: always()
+        uses: ravsamhq/notify-slack-action@v1
+        with:
+          status: ${{ job.status }}
+          notify_when: 'success'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
