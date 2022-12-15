@@ -7,7 +7,7 @@
   gather_facts: false
   tasks:
 
-  - name: copy/update files
+  - name: Get/Update Code
     become: yes
     shell: |
       git clone https://github.com/Fouty7/github-action.git
@@ -21,8 +21,9 @@
       cd github-action
       docker image ls
       docker compose up -d --build
-      
-# Uncomment the last play (cleanup old images) in the shell comand below to clean up dangling docker images. Leave as it is if this is your first run of the pipeline or if no changes have been made to your application code!!
-  #- name: cleanup old images
-  #  become: yes
-  #  shell: docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
+
+  - name: cleanup old images
+    become: yes
+    ignore_errors: true
+    shell: |
+      docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
