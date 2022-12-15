@@ -10,7 +10,7 @@
   - name: Get/Update Code
     become: yes
     shell: |
-      git clone https://github.com/Fouty7/github-action.git
+      git clone git@github.com:Fouty7/github-action.git
       cd github-action
       git pull
     
