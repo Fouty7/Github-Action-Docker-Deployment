@@ -10,7 +10,7 @@
   - name: Get/Update Code
     become: yes
     git:
-      repo: git clone git@github.com:Fouty7/github-action.git
+      repo: git@github.com:Fouty7/github-action.git
       dest: /home/ubuntu/github-action
       accept_hostkey: yes
       key_file: ~/.ssh/id_rsa
