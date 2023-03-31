@@ -10,10 +10,10 @@
   - name: Get/Update Code
     become: no
     git:
-      repo: https://github.com/Fouty7/github-action.git
+      repo: git@github.com:Fouty7/github-action.git
       dest: /home/ubuntu/github-action
       accept_hostkey: yes
-      key_file: ~/.ssh/id_rsa
+      keyfile: ~/.ssh/id_rsa
       clone: yes
       update: yes
 
