@@ -8,7 +8,7 @@
   tasks:
 
   - name: Get/Update Code
-    become: yes
+    become: no
     git:
       repo: https://github.com/Fouty7/github-action.git
       dest: /home/ubuntu/github-action
